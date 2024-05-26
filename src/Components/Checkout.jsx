@@ -1,97 +1,108 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import hospitalDetails from "./HospitalData";
+import Navbar from "./Navbar";
 
 function Checkout() {
-  const { hospitalId, specialId, doctorId } = useParams();
-  const specialData = hospitalDetails[hospitalId]?.cards[specialId - 1];
+  const { hospitalId, doctorId } = useParams();
+  const specialData = hospitalDetails[hospitalId]?.cards.find((card) =>
+    card.doctors.some((doc) => doc.id === parseInt(doctorId))
+  );
 
   if (!specialData) {
     return <div className="bg-red-200 p-4 rounded">Specialty not found.</div>;
   }
 
-  const doctors = specialData.doctors;
-  const selectedDoctor = doctors.find(
+  const selectedDoctor = specialData.doctors.find(
     (doctor) => doctor.id === parseInt(doctorId)
   );
+
   if (!selectedDoctor) {
     return <div className="bg-red-200 p-4 rounded">Doctor not found.</div>;
   }
 
-  // State to keep track of the coupon code and bill details
   const [coupon, setCoupon] = useState("");
   const [consultationFee, setConsultationFee] = useState(250);
   const [serviceFee, setServiceFee] = useState(20);
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [selectedText, setSelectedText] = useState("");
 
-  // Calculate total bill
+  useEffect(() => {
+    const storedSlot = localStorage.getItem("selectedSlot");
+    const storedText = localStorage.getItem("selectedText");
+
+    if (storedSlot && storedText) {
+      setSelectedSlot(storedSlot);
+      setSelectedText(storedText);
+    }
+  }, []);
+
   const total = consultationFee + serviceFee;
 
   return (
-    <div className="h-auto flex flex-col text-black justify-start items-start bg-gray-100 p-4">
-      {/* Booking Date and Time */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-2">Booking Date and Time</h2>
-        <p className="text-lg">Mon, 26th May 10AM</p>
-      </div>
-      <div className="flex flex-col lg:flex-row w-full">
-        {/* Left Half */}
-        <div className="w-full lg:w-3/4 p-4 order-1">
-          {/* Card for Profits in a box */}
-          <div className="p-4 mb-8 max-w-xl mx-auto">
-            <h2 className="text-2xl text-center font-bold ">
-              <div>50% for Our Profits are used for</div>{" "}
-              <div>Orphan Children Health Care</div>
-            </h2>
-          </div>
-          {/* Location from Doctor Data */}
-          <p className="text-sm">Location:</p>
-          <iframe
-            title="Google Maps Location"
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            src={selectedDoctor.location}
-            allowFullScreen
-          ></iframe>
+    <div>
+      <Navbar />
+      <div className="h-auto flex flex-col text-black justify-start items-start bg-white p-4">
+        <div className="">
+          <h2 className="text-2xl font-bold mb-2">Booking Date and Time</h2>
+          <p className="text-lg">
+            {selectedText}, {selectedSlot}
+          </p>
         </div>
-        {/* Right Half */}
-        <div className="w-full lg:w-1/4 p-4 flex flex-col justify-between order-2">
-          {/* Coupon Apply */}
-          <div className="self-start mb-8">
-            <input
-              type="text"
-              placeholder="Enter coupon code"
-              value={coupon}
-              onChange={(e) => setCoupon(e.target.value)}
-              className="border p-3 rounded-md w-full bg-white"
-            />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600 w-full">
-              Apply
-            </button>
-          </div>
-          {/* Bill Details */}
-          <div className="bg-gray-100 rounded-lg p-4">
-            <h2 className="text-xl font-bold mb-4">Bill Details</h2>
-            <div className="mb-4">
-              <div className="flex justify-between">
-                <p className="text-lg">Consultation Fee:</p>
-                <p className="text-lg">${consultationFee}</p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-lg">Service Fee and Tax:</p>
-                <p className="text-lg">${serviceFee}</p>
-              </div>
+        <div className="flex flex-col lg:flex-row w-full">
+          <div className="w-full lg:w-3/4 px-4 pb-4 lg:order-1 xs:order-2">
+            <div className="p-4 mb-8 max-w-xl mx-auto">
+              <h2 className="text-2xl text-center font-bold">
+                <div>50% of Our Profits are used for</div>
+                <div>Orphan Children Health Care</div>
+              </h2>
             </div>
-            <div className="border-t-2 border-gray-300 pt-4">
-              <p className="text-xl font-bold flex justify-between">
-                <span>Total:</span>
-                <span>${total}</span>
-              </p>
-              <button className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-green-600 w-full">
-                Checkout
+            <p className="text-2xl font-semibold ">Location</p>
+            <iframe
+              title="Google Maps Location"
+              width="100%"
+              height="255px"
+              style={{ border: 0 }}
+              src={selectedDoctor.location}
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="w-full lg:w-1/4 p-4 flex flex-col justify-between order-2 xs:order-1">
+            <div className="mb-8">
+              <input
+                type="text"
+                placeholder="Enter coupon code"
+                value={coupon}
+                onChange={(e) => setCoupon(e.target.value)}
+                className="border p-3 rounded-md items-center w-full bg-white"
+              />
+              <button className="bg-[#2BB673] text-white py-2 px-4 rounded-md hover:bg-[#2BB673] mt-4 w-full">
+                APPLY
               </button>
+              <h2 className="text-xl font-bold mb-4 mt-4">Bill Details</h2>
+              <div className="mb-4">
+                <div className="flex justify-between">
+                  <p className="text-lg">Consultation Fee:</p>
+                  <p className="text-lg">₹{consultationFee}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-lg">Service Fee and Tax:</p>
+                  <p className="text-lg">₹{serviceFee}</p>
+                </div>
+              </div>
+              <div className="border-t-2 border-gray-300 pt-4">
+                <p className="text-xl font-bold flex justify-between">
+                  <span>Total Amount:</span>
+                  <span>₹{total}</span>
+                </p>
+                <div className="flex mt-4 justify-center">
+                  <button className="bg-[#2BB673] text-white py-2 px-4 rounded-md hover:bg-[#2BB673] w-28">
+                    Checkout
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

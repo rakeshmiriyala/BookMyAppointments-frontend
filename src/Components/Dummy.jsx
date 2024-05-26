@@ -1,22 +1,32 @@
 /* eslint-disable no-unused-vars */
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
-import Main from "./Main";
-import Highlight from "./Highlight";
-import Login from "./Login";
 import logo from "../assets/Logo.png";
+import HighlightPage from "./Highlight";
+import Main from "./Main";
 import { FaLocationDot } from "react-icons/fa6";
-// import { HiLocationMarker } from "react-icons/hi";
 
-function NewNavbar() {
+function Dummy() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [areaName, setAreaName] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState(
-    localStorage.getItem("selectedLocation") || ""
-  );
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   useEffect(() => {
-    if (selectedLocation && selectedLocation !== "Current Location") {
+    const storedLocation = localStorage.getItem("selectedLocation");
+    if (storedLocation && storedLocation !== "Current Location") {
+      setSelectedLocation(storedLocation);
+      setAreaName(storedLocation);
+    } else {
+      setSelectedLocation("Select location");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      selectedLocation &&
+      selectedLocation !== "Select location" &&
+      selectedLocation !== "Current Location"
+    ) {
       setAreaName(selectedLocation);
     } else if (selectedLocation === "Current Location" && currentLocation) {
       fetchAreaName(currentLocation.latitude, currentLocation.longitude);
@@ -82,30 +92,10 @@ function NewNavbar() {
     dropdown.classList.remove("active");
   };
 
-  const [showLoginBox, setShowLoginBox] = useState(false);
-  const loginBoxRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (loginBoxRef.current && !loginBoxRef.current.contains(event.target)) {
-        setShowLoginBox(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const toggleLoginBox = () => {
-    setShowLoginBox(!showLoginBox);
-  };
-
   return (
-    <div className="bg-white">
-      <div className="navbar bg-[#333333] relative w-auto flex items-center justify-between lg:py-1 xs:py-0 pl-0 pr-2">
-        <div className="flex-grow relative">
+    <div className="h-screen bg-white">
+      <div className="navbar bg-[#333333] relative w-auto z-10 flex items-center justify-between lg:py-1 xs:py-0 pl-0 pr-2">
+        <div className="flex-grow relative flex items-center">
           <img
             src={logo}
             alt="Logo"
@@ -115,7 +105,7 @@ function NewNavbar() {
           <input
             type="text"
             placeholder="Search"
-            className="input focus:outline-none lg:pl-10 xs:h-10 lg:h-12 xs:pl-6 w-full text-black bg-white"
+            className="input focus:outline-none lg:pl-10 xs:pl-6 xs:h-10 lg:h-12 w-full text-black bg-white"
           />
           <div
             className="dropdown lg:ml-6 xs:mx-0 xs:text-lg lg:text-3xl lg:mr-6"
@@ -124,7 +114,7 @@ function NewNavbar() {
             <div
               tabIndex={0}
               role="button"
-              className="btn bg-[#333333] text-white xs:text-xs xs:px-0.5 hover:bg-[#333333] border-none xs:flex-nowrap lg:flex-nowrap"
+              className="btn bg-[#333333] text-white xs:text-xs xs:px-1 hover:bg-[#333333] border-none xs:flex-nowrap lg:flex-nowrap"
               onClick={() => {
                 document.getElementById("dropdown").classList.toggle("active");
               }}
@@ -135,71 +125,100 @@ function NewNavbar() {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content bg-[#333333]  z-[1] menu p-2 shadow text-white w-auto"
+              className="dropdown-content text-center z-[1] menu bg-[#333333] text-white w-auto"
             >
-              <li>
-                <a onClick={handleSelectCurrentLocation}>
+              <li className="">
+                <a className="" onClick={handleSelectCurrentLocation}>
                   Select Current Location
                 </a>
               </li>
-              <li>
-                <a onClick={() => handleCitySelect("Gachibowli")}>Gachibowli</a>
+              <li className="">
+                <a className="" onClick={() => handleCitySelect("Gachibowli")}>
+                  Gachibowli
+                </a>
               </li>
-              <li>
-                <a onClick={() => handleCitySelect("Banjara Hills")}>
+              <li className="">
+                <a
+                  className=""
+                  onClick={() => handleCitySelect("Banjara Hills")}
+                >
                   Banjara Hills
                 </a>
               </li>
-              <li>
-                <a onClick={() => handleCitySelect("Jubilee Hills")}>
+              <li className="">
+                <a
+                  className=""
+                  onClick={() => handleCitySelect("Jubilee Hills")}
+                >
                   Jubilee Hills
                 </a>
               </li>
-              <li>
-                <a onClick={() => handleCitySelect("Hitech City")}>
+              <li className="">
+                <a className="" onClick={() => handleCitySelect("Hitech City")}>
                   Hitech City
                 </a>
               </li>
-              <li>
-                <a onClick={() => handleCitySelect("Secunderabad")}>
+              <li className="">
+                <a
+                  className=""
+                  onClick={() => handleCitySelect("Secunderabad")}
+                >
                   Secunderabad
                 </a>
               </li>
             </ul>
           </div>
-        </div>
-        <div className="flex-none gap-2">
-          <button
-            onClick={toggleLoginBox}
-            className="btn border-none text-white rounded-3xl bg-[#2BB673] hover:bg-[#2BB673]"
-          >
-            Login
-          </button>
-        </div>
-        {showLoginBox && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 pointer-events-auto">
-            {/* Overlay to disable interactions with content below */}
-            {/* Login/signup box */}
+
+          <div className="dropdown dropdown-end">
             <div
-              ref={loginBoxRef}
-              className="bg-white py-6 px-10 rounded-2xl shadow-lg relative z-50"
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
             >
-              {/* Render the Login component here */}
-              <Login />
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                />
+              </div>
             </div>
+            <ul
+              tabIndex={0}
+              className=" z-[1] p-2 shadow menu menu-sm dropdown-content bg-[#333333] text-white w-60"
+            >
+              <li>
+                <a className=" justify-center pb-3 ">My Profile</a>
+              </li>
+              <hr />
+              <li>
+                <a className=" justify-center py-3 ">My Bookings</a>
+              </li>
+              <hr />
+              <li>
+                <a className=" justify-center py-3 ">Favourites</a>
+              </li>
+              <hr />
+              <li>
+                <a className=" justify-center py-3 ">My Medical Records</a>
+              </li>
+              <hr />
+              <li>
+                <a className=" justify-center py-3">Help & Support</a>
+              </li>
+              <hr />
+              <li>
+                <a className="text-red-500 py-3 justify-center underline">
+                  SIGN OUT
+                </a>
+              </li>
+            </ul>
           </div>
-        )}
+        </div>
       </div>
-      <div
-        className={
-          showLoginBox ? "opacity-5 xs:opacity-0 pointer-events-none" : ""
-        }
-      >
-        <Highlight />
-        <Main />
-      </div>
+      <HighlightPage />
+      <Main />
     </div>
   );
 }
 
-export default NewNavbar;
+export default Dummy;

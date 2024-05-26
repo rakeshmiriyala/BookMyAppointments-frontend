@@ -1,12 +1,15 @@
 import { useState } from "react";
 
 const Verification = () => {
+  const HandleVerify = () => {
+    window.location.href = "/dummy";
+  };
   return (
     <div
       className="max-w-lg mx-auto bg-white"
       style={{ width: "300px", height: "200px" }}
     >
-      <p className="text-black">We have sent a code to your mobile.</p>
+      <p className="text-black text-xl">We have sent a code to your mobile.</p>
       {/* Add 4-digit input boxes here */}
       <div className="flex justify-center mt-4">
         {[1, 2, 3, 4].map((_, index) => (
@@ -14,14 +17,19 @@ const Verification = () => {
             key={index}
             type="text"
             maxLength={1}
-            className="w-12 h-12 text-4xl bg-white mx-2 border-b-2 text-center"
+            className="w-12 h-12 text-4xl bg-white mx-2 text-center border-b  focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
           />
         ))}
       </div>
       {/* Add Verify button here */}
-      <button className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 w-full mt-8">
-        Verify
-      </button>
+      <div className="flex justify-center mt-5">
+        <button
+          onClick={HandleVerify}
+          className="bg-green-500 text-white py-2 px-4 text-lg rounded-md hover:bg-green-600 w-28"
+        >
+          VERIFY
+        </button>
+      </div>
     </div>
   );
 };
@@ -34,11 +42,11 @@ const Signup = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto" style={{ width: "300px" }}>
+    <div className="max-w-lg rounded-2xl mx-auto" style={{ width: "300px" }}>
       {!showVerification ? (
         <div>
           <h2 className="text-2xl text-center text-black font-semibold mb-4">
-            Register
+            REGISTER
           </h2>
           <div className="mb-4">
             <input
@@ -85,12 +93,14 @@ const Signup = () => {
               required
             />
           </div>
-          <button
-            onClick={handleSignupClick}
-            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 w-full"
-          >
-            Sign up
-          </button>
+          <div className="flex justify-center">
+            <button
+              onClick={handleSignupClick}
+              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 w-28"
+            >
+              REGISTER
+            </button>
+          </div>
         </div>
       ) : (
         <Verification />

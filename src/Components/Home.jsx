@@ -11,7 +11,7 @@ import NewNavbar from "./NewNavbar";
 
 function Home() {
   return (
-    <div className="h-screen">
+    <>
       <NewNavbar />
       {/* <Hero /> */}
       {/* <HighlightPage />
@@ -21,7 +21,7 @@ function Home() {
       {/* <Faqsection /> */}
       {/* <Main /> */}
       {/* <Footer /> */}
-    </div>
+    </>
   );
 }
 

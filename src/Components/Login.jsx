@@ -11,9 +11,12 @@ const Login = () => {
   return (
     <div className="">
       {!showSignup && (
-        <div style={{ width: "280px", height: "280px" }}>
+        <div
+          className="rounded-2xl"
+          style={{ width: "280px", height: "280px" }}
+        >
           <h2 className="text-2xl text-center text-black font-semibold mb-4">
-            Login
+            LOGIN
           </h2>
           <div className="mb-4">
             <input
@@ -33,9 +36,14 @@ const Login = () => {
               required
             />
           </div>
-          <button className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 w-full">
-            Login
-          </button>
+          <div className="flex justify-center">
+            <button
+              onClick={handleSignupClick}
+              className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 w-28"
+            >
+              LOGIN
+            </button>
+          </div>
           <div className="mt-4 text-center">
             <span className="text-sm text-gray-600">Dont have an account?</span>{" "}
             <button

@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { FaSearch, FaStar } from "react-icons/fa"; // Import FaStar icon
+import { FaHeart, FaSearch, FaStar } from "react-icons/fa"; // Import FaStar icon
 import hospitalDetails from "./HospitalData";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const DoctorCard = ({ doctor }) => {
-  const { hospitalId, specialId } = useParams();
+  const { hospitalId } = useParams();
   const doctorId = doctor.id;
 
   // Function to generate star icons based on the rating
@@ -56,9 +57,20 @@ const DoctorCard = ({ doctor }) => {
           />
         </div>
       </div>
+
       {/* Doctor Details */}
       <div style={{ flex: 1 }}>
         <h4>{doctor.name}</h4>
+        <div
+          style={{
+            textAlign: "right",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <FaHeart style={{ color: doctor.heartcolor, cursor: "pointer" }} />
+        </div>
         <p>
           <strong>Specialty:</strong> {doctor.specialty}
         </p>
@@ -70,7 +82,7 @@ const DoctorCard = ({ doctor }) => {
         </p>
         <br />
         <Link
-          to={`/hospital/${hospitalId}/special/${specialId}/doctor/${doctorId}`}
+          to={`/hospital/${hospitalId}/doctor/${doctorId}`}
           style={{
             padding: "5px 15px",
             backgroundColor: "#007bff",
@@ -104,38 +116,42 @@ const Specialdata = () => {
     : doctors;
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#fff" }}>
-      <div style={{ marginBottom: "20px" }}>
-        <div className="search-container" style={{ position: "relative" }}>
-          <FaSearch
-            style={{
-              position: "absolute",
-              left: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              color: "#888",
-              cursor: "pointer",
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            style={{
-              padding: "8px 10px 8px 30px",
-              width: "100%",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              backgroundColor: "#fff",
-            }}
-          />
+    <div>
+      <Navbar />
+      <div style={{ padding: "20px", backgroundColor: "#fff" }}>
+        <div style={{ marginBottom: "20px" }}>
+          {/* <div className="search-container" style={{ position: "relative" }}>
+            <FaSearch
+              style={{
+                position: "absolute",
+                left: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#888",
+                cursor: "pointer",
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              style={{
+                padding: "8px 10px 8px 30px",
+                width: "100%",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                backgroundColor: "#fff",
+              }}
+            />
+          </div> */}
         </div>
-      </div>
-      <div>
-        {filteredDoctors.map((doctor) => (
-          <DoctorCard key={doctor.id} doctor={doctor} />
-        ))}
+
+        <div>
+          {filteredDoctors.map((doctor) => (
+            <DoctorCard key={doctor.id} doctor={doctor} />
+          ))}
+        </div>
       </div>
     </div>
   );
