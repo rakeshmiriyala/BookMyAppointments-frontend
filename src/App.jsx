@@ -25,12 +25,12 @@ const App = () => {
         <Route exact path="/hospital/:id" element={<HospitalDetailsPage />} />
         <Route
           exact
-          path="/hospital/:hospitalId/doctor/:doctorId"
+          path="/hospital/:hospitalId/card/:cardNumber/doctor/:doctorId"
           element={<Booking />}
         />
         <Route
           exact
-          path="/hospital/:hospitalId/doctor/:doctorId/checkout"
+          path="/hospital/:hospitalId/card/:cardNumber/doctor/:doctorId/checkout"
           element={<Checkout />}
         />
       </Routes>

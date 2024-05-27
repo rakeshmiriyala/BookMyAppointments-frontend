@@ -5,6 +5,7 @@ import logo from "../assets/Logo.png";
 import HighlightPage from "./Highlight";
 import Main from "./Main";
 import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function Dummy() {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -96,16 +97,18 @@ function Dummy() {
     <div className="h-screen bg-white">
       <div className="navbar bg-[#333333] relative w-auto z-10 flex items-center justify-between lg:py-1 xs:py-0 pl-0 pr-2">
         <div className="flex-grow relative flex items-center">
-          <img
-            src={logo}
-            alt="Logo"
-            className="lg:w-[70px]  lg:h-[70px]  xs:w-[50px]  xs:h-[50px]"
-          />
-          <FaSearch className="absolute lg:top-6 lg:left-20 xs:top-4.5 xs:left-14 xs:text-sm lg:text-xl text-gray-400" />
+          <Link to="/dummy">
+            <img
+              src={logo}
+              alt="Logo"
+              className="lg:w-[85px] lg:h-[70px] xs:w-[100px] xs:h-[50px] md:w-[70px]"
+            />
+          </Link>
+          <FaSearch className="absolute lg:top-6 lg:left-20 xs:top-4.5 xs:left-14 md:left-16 xs:text-sm lg:text-xl text-gray-400" />
           <input
             type="text"
             placeholder="Search"
-            className="input focus:outline-none lg:pl-10 xs:pl-6 xs:h-10 lg:h-12 w-full text-black bg-white"
+            className="input focus:outline-none lg:pl-10 xs:h-10 md:pl-8 lg:h-12 xs:pl-7 w-full text-black bg-white"
           />
           <div
             className="dropdown lg:ml-6 xs:mx-0 xs:text-lg lg:text-3xl lg:mr-6"

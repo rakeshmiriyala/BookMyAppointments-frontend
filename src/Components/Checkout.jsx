@@ -6,9 +6,9 @@ import hospitalDetails from "./HospitalData";
 import Navbar from "./Navbar";
 
 function Checkout() {
-  const { hospitalId, doctorId } = useParams();
-  const specialData = hospitalDetails[hospitalId]?.cards.find((card) =>
-    card.doctors.some((doc) => doc.id === parseInt(doctorId))
+  const { hospitalId, cardNumber, doctorId } = useParams(); // Retrieve hospitalId, cardNumber, and doctorId from URL params
+  const specialData = hospitalDetails[hospitalId]?.cards.find(
+    (card) => card.id === parseInt(cardNumber)
   );
 
   if (!specialData) {
@@ -42,9 +42,9 @@ function Checkout() {
   const total = consultationFee + serviceFee;
 
   return (
-    <div>
+    <div className="h-screen flex flex-col">
       <Navbar />
-      <div className="h-auto flex flex-col text-black justify-start items-start bg-white p-4">
+      <div className="flex-grow flex flex-col text-black justify-start items-start bg-white p-4">
         <div className="">
           <h2 className="text-2xl font-bold mb-2">Booking Date and Time</h2>
           <p className="text-lg">

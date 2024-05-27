@@ -8,9 +8,9 @@ import { FaHeart, FaStar } from "react-icons/fa";
 import { useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const DoctorCard = ({ doctor, hospitalId }) => {
-  const handleDoctorBooking = () => {
-    window.location.href = `/hospital/${hospitalId}/doctor/${doctor.id}`;
+const DoctorCard = ({ doctor, hospitalId, cardNumber }) => {
+  const handleDoctorBooking = (cardNumber) => {
+    window.location.href = `/hospital/${hospitalId}/card/${cardNumber}/doctor/${doctor.id}`;
   };
 
   const renderStars = (rating) => {
@@ -38,7 +38,7 @@ const DoctorCard = ({ doctor, hospitalId }) => {
         borderRadius: "10px",
         marginBottom: "20px",
       }}
-      onClick={handleDoctorBooking}
+      onClick={() => handleDoctorBooking(cardNumber)}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
         <img
@@ -129,8 +129,18 @@ const HospitalDetailsPage = () => {
       <div className="h-full pt-0  px-5 " style={{ backgroundColor: "#ffff" }}>
         {hospital && (
           <>
+            <style>
+              {`
+                      /* Hide scrollbar for Chrome, Safari, and Opera */
+                      .raki::-webkit-scrollbar {
+                        display: none;
+                      }
+                      
+                      
+                    `}
+            </style>
             <div
-              className="xs:top-[64px] sm:top-[64px] lg:top-[70px] xl:top-[80px]  "
+              className="xs:top-[64px] sm:top-[64px] lg:top-[70px] xl:top-[80px] raki overflow-x-scroll "
               style={{
                 position: "sticky",
                 zIndex: "2",
@@ -143,22 +153,10 @@ const HospitalDetailsPage = () => {
               }}
             >
               <button
-                className="scroll-button left "
+                className="scroll-button left bg-[#2BB673] text-white border-none flex justify-center rounded-full lg:w-10 lg:h-10 md:w-12 xs:w-[128px] xs:h-8 items-center z-2"
                 onClick={scrollLeft}
-                style={{
-                  borderRadius: "50%", // Make the button circular
-                  background: "#2BB673", // Add background color
-                  color: "#fff", // Text color
-                  width: "40px", // Adjust width and height to desired size
-                  height: "40px",
-                  border: "none", // Remove border
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  zIndex: 2, // Ensure the button is above the card container
-                }}
               >
-                <FaChevronLeft style={{ fontSize: "20px" }} />
+                <FaChevronLeft className="xs:text-lg md:text-xl lg:text-2xl" />
               </button>
               <div
                 ref={carouselRef}
@@ -169,7 +167,7 @@ const HospitalDetailsPage = () => {
                   flexGrow: 1, // Ensure it takes available space
                 }}
               >
-                {hospital.cards.map((card) => (
+                {hospital.cards.map((card, index) => (
                   <div
                     key={card.id}
                     style={{
@@ -216,23 +214,10 @@ const HospitalDetailsPage = () => {
                 ))}
               </div>
               <button
-                className="scroll-button right"
+                className="scroll-button right bg-[#2BB673] text-white border-none flex justify-center rounded-full lg:w-10 lg:h-10 md:w-12 xs:w-[128px] xs:h-8 items-center z-2"
                 onClick={scrollRight}
-                style={{
-                  borderRadius: "50%", // Make the button circular
-                  background: "#2BB673", // Add background color
-                  color: "#fff", // Text color
-                  width: "40px", // Adjust width and height to desired size
-                  height: "40px",
-                  border: "none", // Remove border
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginRight: "5px",
-                  zIndex: 2, // Ensure the button is above the card container
-                }}
               >
-                <FaChevronRight style={{ fontSize: "20px" }} />
+                <FaChevronRight className="xs:text-lg md:text-xl lg:text-2xl" />
               </button>
             </div>
             {/* Display doctors for the selected card */}
@@ -261,6 +246,7 @@ const HospitalDetailsPage = () => {
                       key={doctor.id}
                       doctor={doctor}
                       hospitalId={hospitalId} // Pass hospitalId to DoctorCard
+                      cardNumber={selectedCard.id} // Pass cardNumber to DoctorCard
                     />
                   ))}
                 </div>

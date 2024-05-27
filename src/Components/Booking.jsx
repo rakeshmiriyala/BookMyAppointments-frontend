@@ -7,9 +7,9 @@ import { FaHeart, FaStar } from "react-icons/fa";
 import Navbar from "./Navbar";
 
 function Booking() {
-  const { hospitalId, doctorId } = useParams();
-  const specialData = hospitalDetails[hospitalId]?.cards.find((card) =>
-    card.doctors.some((doc) => doc.id === parseInt(doctorId))
+  const { hospitalId, cardNumber, doctorId } = useParams();
+  const specialData = hospitalDetails[hospitalId]?.cards.find(
+    (card) => card.id === parseInt(cardNumber)
   );
 
   if (!specialData) {
@@ -77,12 +77,11 @@ function Booking() {
       localStorage.setItem("selectedSlot", selectedButton);
       localStorage.setItem("selectedText", selectedText);
       alert(`Booking confirmed at ${selectedButton} on ${selectedText}`);
-      window.location.href = `/hospital/${hospitalId}/doctor/${doctorId}/checkout`;
+      window.location.href = `/hospital/${hospitalId}/card/${cardNumber}/doctor/${doctorId}/checkout`;
     } else {
       alert("Please select a time slot and day for booking.");
     }
   };
-
   return (
     <div className="bg-white h-auto">
       <Navbar />
