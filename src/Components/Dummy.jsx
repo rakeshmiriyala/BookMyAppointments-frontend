@@ -190,15 +190,21 @@ function Dummy() {
               className=" z-[1] p-2 shadow menu menu-sm dropdown-content bg-[#333333] text-white w-60"
             >
               <li>
-                <a className=" justify-center pb-3 ">My Profile</a>
+                <Link to="/profile" className=" justify-center pb-3 ">
+                  My Profile
+                </Link>
               </li>
               <hr />
               <li>
-                <a className=" justify-center py-3 ">My Bookings</a>
+                <Link to="/bookings" className=" justify-center py-3 ">
+                  My Bookings
+                </Link>
               </li>
               <hr />
               <li>
-                <a className=" justify-center py-3 ">Favourites</a>
+                <Link to="/fav" className=" justify-center py-3 ">
+                  Favourites
+                </Link>
               </li>
               <hr />
               <li>
@@ -210,9 +216,12 @@ function Dummy() {
               </li>
               <hr />
               <li>
-                <a className="text-red-500 py-3 justify-center underline">
+                <Link
+                  to="/"
+                  className="text-red-500 py-3 justify-center underline"
+                >
                   SIGN OUT
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
