@@ -7,12 +7,15 @@
 // import Faqsection from "./Faq";
 // import HighlightPage from "./Highlight";
 // import Main from "./Main";
+import ContactUs from "./ContactUs";
 import NewNavbar from "./NewNavbar";
 
 function Home() {
   return (
     <>
       <NewNavbar />
+      <br />
+      <ContactUs />
       {/* <Hero /> */}
       {/* <HighlightPage />
       <Main /> */}

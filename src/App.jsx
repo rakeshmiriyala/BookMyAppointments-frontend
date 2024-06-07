@@ -14,6 +14,7 @@ import VerifyOTP from "./Components/LoginOtp";
 import Profile from "./Components/Profile";
 import BookingsPage from "./Components/Bookings";
 import Records from "./Components/Records";
+import Fav from "./Components/Fav";
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/fav" element={<Profile />} />
+        <Route exact path="/fav" element={<Fav />} />
         <Route exact path="/bookings" element={<BookingsPage />} />
         <Route exact path="/records" element={<Records />} />
         <Route exact path="/dummy" element={<Dummy />} />

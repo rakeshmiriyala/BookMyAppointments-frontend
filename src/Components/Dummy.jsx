@@ -208,7 +208,9 @@ function Dummy() {
               </li>
               <hr />
               <li>
-                <a className=" justify-center py-3 ">My Medical Records</a>
+                <Link to="/records" className=" justify-center py-3 ">
+                  My Medical Records
+                </Link>
               </li>
               <hr />
               <li>
