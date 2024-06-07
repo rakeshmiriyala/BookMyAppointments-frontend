@@ -1,45 +1,56 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Hospitals from "./HospitalPage";
 import Labs from "./LabPage";
 import { FaHeart } from "react-icons/fa";
 
-// Raw data for a doctor
-const doctorData = [
-  {
-    id: 1,
-    name: "Dr. John Doe",
-    image: "https://via.placeholder.com/150",
-    education: "MBBS, MD",
-    heartcolor: "red",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Dr. Jane Smith",
-    image: "https://via.placeholder.com/150",
-    education: "MBBS, MS",
-    heartcolor: "blue",
-    rating: 4.8,
-  },
-  // Add more doctors as needed
-];
-
-const Fav = () => {
+const Fav = (localStorageKeys) => {
   const [activeTab, setActiveTab] = useState("hospitals");
-  const [selectedCard, setSelectedCard] = useState(null); // State to store selected card
+  const [likedDoctors, setLikedDoctors] = useState([]);
+  const [doctorData, setDoctorData] = useState([]); // State to store doctor data
+
+  // Fetch doctor data from local storage on component mount
+  // Fetch doctor data from local storage based on the provided keys
+  useEffect(() => {
+    localStorageKeys.forEach((key) => {
+      const storedDoctorData = JSON.parse(localStorage.getItem(key));
+      if (storedDoctorData) {
+        // You might want to merge the data from multiple keys into a single array
+        // Here, we are replacing the existing doctor data with the data from the current key
+        setDoctorData((prevData) => [...prevData, ...storedDoctorData]);
+      }
+    });
+  }, [localStorageKeys]);
+  // Fetch liked doctors data from local storage on component mount
+  useEffect(() => {
+    const storedLikedDoctors = JSON.parse(localStorage.getItem("likedDoctors"));
+    if (storedLikedDoctors) {
+      setLikedDoctors(storedLikedDoctors);
+    }
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    // Set selectedCard to null when tab changes
-    setSelectedCard(null);
   };
 
-  const handleDoctorBooking = (cardNumber) => {
+  const handleDoctorBooking = (doctorId) => {
     // Implement handleDoctorBooking functionality here
+  };
+
+  const handleToggleLike = (doctorId) => {
+    // Toggle the like status of a doctor
+    if (likedDoctors.includes(doctorId)) {
+      // If the doctor is already liked, remove them from the liked list
+      setLikedDoctors(likedDoctors.filter((id) => id !== doctorId));
+    } else {
+      // If the doctor is not liked, add them to the liked list
+      setLikedDoctors([...likedDoctors, doctorId]);
+    }
   };
 
   const DoctorCard = ({ doctor }) => {
     // DoctorCard component to display individual doctor details
+    const isLiked = likedDoctors.includes(doctor.id); // Check if the doctor is liked
+
     return (
       <div
         className="hover:bg-[#2BB673] hover:text-white text-black cursor-pointer lg:p-2.5 xs:px-1.5 xs:py-1"
@@ -77,8 +88,12 @@ const Fav = () => {
               <FaHeart
                 className="lg:text-xl lg:mt-1 xs:text-2xl sm:text-xl sm:mt-0 xs:mr-1 xs:mt-0 xs:ml-[2px]"
                 style={{
-                  color: doctor.heartcolor,
+                  color: isLiked ? "red" : "gray", // Set heart color based on like status
                   cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent the parent click event from firing
+                  handleToggleLike(doctor.id); // Toggle like status
                 }}
               />
             </div>
